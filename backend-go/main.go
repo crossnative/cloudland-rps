@@ -15,7 +15,7 @@ func main() {
 	r.Use(cors.AllowAll().Handler)
 
 	r.Route("/v1", func(r chi.Router) {
-		r.Post("/play", playComputerHagndler)
+		r.Post("/play", playComputerHandler)
 	})
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
