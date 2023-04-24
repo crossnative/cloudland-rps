@@ -1,1 +1,1 @@
-# cloudland-rps
+# Rock, Paper, Scissors for Cloudland
