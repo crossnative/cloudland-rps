@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppService } from '../app.service';
 import { Game } from '../models';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss'],
 })
-export class ResultComponent implements OnInit {
+export class ResultComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$: Subject<void> = new Subject();
+
   game$ = new BehaviorSubject<Game | undefined>(undefined);
   id = this.appService.id;
 
@@ -24,5 +26,8 @@ export class ResultComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

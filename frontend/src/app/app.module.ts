@@ -5,9 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ResultComponent } from './result/result.component';
 import { PlayComponent } from './play/play.component';
+import { LandingComponent } from './landing/landing.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
-  declarations: [AppComponent, ResultComponent, PlayComponent],
+  declarations: [AppComponent, ResultComponent, PlayComponent, LandingComponent, GameComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
