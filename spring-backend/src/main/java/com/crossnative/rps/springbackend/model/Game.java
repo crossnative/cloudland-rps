@@ -6,19 +6,14 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
+import java.util.function.BiFunction;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class RockPaperScissorsGame {
-
-  @AllArgsConstructor
-  public enum Choice {
-    ROCK, PAPER, SCISSORS;
-  }
+@JsonInclude(value = Include.NON_NULL)
+public class Game {
 
   public enum GameState {
     WAITING_FOR_PLAYERS,
@@ -31,9 +26,16 @@ public class RockPaperScissorsGame {
   @JsonIgnore
   private List<Player> players = new ArrayList<>();
 
+  @JsonIgnore
+  private final BiFunction<Player, Player, GameResult> evaluateResult;
+
+  public Game(final BiFunction<Player, Player, GameResult> evaluateResult) {
+    this.evaluateResult = evaluateResult;
+  }
+
   @JsonProperty(value = "player1")
   public Player getPlayerOne() {
-    return this.players.size() > 0
+    return !this.players.isEmpty()
         ? this.players.get(0)
         : null;
   }
@@ -55,40 +57,36 @@ public class RockPaperScissorsGame {
       return GameState.WAITING_FOR_CHOICES;
     }
   }
-  
-  @JsonInclude(Include.NON_NULL)
-  public GameResult getResult() {
-    if (this.getGameState() != GameState.DONE) {
+
+  @JsonProperty(value = "result")
+  public GameResult getGameResult() {
+    if (this.getGameState().equals(GameState.DONE)) {
+      return this.evaluateResult.apply(this.players.get(0), this.players.get(1));
+    } else {
       return null;
     }
-
-    final var result =
-        Math.floorMod(this.players.get(0).getChoice() - this.players.get(1).getChoice(), 3);
-
-    return switch (result) {
-      case 0 -> GameResult.tie();
-      case 1 -> GameResult.playerWins(this.players.get(0), this.players.get(1));
-      case 2 -> GameResult.playerWins(this.players.get(1), this.players.get(0));
-      default -> null;
-    };
   }
 
-  public RockPaperScissorsGame joinGame(final Player player) {
+  public void addPlayer(final Player player) {
+    if (this.players.stream().anyMatch(p -> p.getId().equals(player.getId()))) {
+      throw new IllegalArgumentException("Player is already part of this game!");
+    }
+    if (Objects.isNull(player.getId()) || Objects.isNull(player.getName())) {
+      throw new IllegalArgumentException("Player needs to provide id and name in order to join!");
+    }
     if (this.players.size() >= 2) {
       throw new IllegalArgumentException("Game is full already");
     }
 
     this.players.add(player);
-    return this;
   }
 
-  public RockPaperScissorsGame updateChoice(final UUID playerid, final String choice) {
-    this.players.stream()
-        .filter(player -> player.getId().equals(playerid))
+  public Player getPlayer(final UUID playerId) {
+    return this.players
+        .stream()
+        .filter(p -> playerId.equals(p.getId()))
         .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException("Player is not part of this game!"))
-        .setChoice(Choice.valueOf(choice.toUpperCase()).ordinal());
-
-    return this;
+        .orElseThrow(() -> new IllegalArgumentException("Player is not part of this game!"));
   }
+
 }
