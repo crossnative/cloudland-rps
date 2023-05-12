@@ -10,16 +10,18 @@ import { ActivatedRoute } from '@angular/router';
 export class GameComponent {
   id = this.appService.id;
 
+  state$ = this.appService.state$;
+
   constructor(private route: ActivatedRoute, private appService: AppService) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const game = params['game'];
-      console.error(game);
-
-      
-
-
+      const gameId = params['gameId'];
+      this.appService.get(gameId).subscribe();
     });
+  }
+
+  onChoose(choice: string) {
+    this.appService.choose(choice).subscribe();
   }
 }
