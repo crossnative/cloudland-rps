@@ -1,5 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Game, Player } from '../models';
+import { switchMap } from 'rxjs';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-landing',
@@ -7,19 +11,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./landing.component.scss'],
 })
 export class LandingComponent {
-  constructor(private router: Router) {}
+  id = this.appService.id;
+
+  gameId: string = '';
+
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient,
+    private appService: AppService
+  ) {}
 
   onNewGame() {
-    // POST an Backend
-    // { 
-    //    player1 = {
-       //        id: myId,
-     //       }      
-    //  }
-    this.router.navigate(['/game', 'new-id']);
+    this.appService
+      .createAndJoinGame()
+      .subscribe((game) => this.router.navigate(['/game', game.id]));
   }
 
   onJoinGame() {
-    this.router.navigate(['/game', 'existing-id']);
+    if (!this.gameId) {
+      return;
+    }
+
+    this.appService
+      .joinGame(this.gameId)
+      .subscribe((game) => this.router.navigate(['/game', game.id]));
   }
 }

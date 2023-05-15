@@ -7,10 +7,17 @@ import { ResultComponent } from './result/result.component';
 import { PlayComponent } from './play/play.component';
 import { LandingComponent } from './landing/landing.component';
 import { GameComponent } from './game/game.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, ResultComponent, PlayComponent, LandingComponent, GameComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule],
+  declarations: [
+    AppComponent,
+    ResultComponent,
+    PlayComponent,
+    LandingComponent,
+    GameComponent,
+  ],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
