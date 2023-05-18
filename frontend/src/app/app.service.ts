@@ -52,7 +52,7 @@ export class AppService {
   }
 
   createAndJoinGame() {
-    return this.httpClient.post<Game>('${this.backendRoot}/games', null).pipe(
+    return this.httpClient.post<Game>(`${this.backendRoot}/games`, null).pipe(
       switchMap((game) =>
         this.httpClient.post<Game>(
           `${this.backendRoot}/games/${game.id}/players`,
@@ -87,8 +87,7 @@ export class AppService {
   }
 
   onChoose(choice: string) {
-    // Go Backend
-    return this.httpClient.post<Game>('http://localhost:4400/v1/play', {
+    return this.httpClient.post<Game>(`${this.backendRoot}/play`, {
       player1: {
         id: this.id,
         choice: choice,

@@ -2,6 +2,12 @@ package main
 
 import "math/rand"
 
+const (
+	WaitingForPlayers = "WAITING_FOR_PLAYERS"
+	WaitingForChoices = "WAITING_FOR_CHOICES"
+	Done              = "DONE"
+)
+
 func choices() []string {
 	return []string{
 		"rock",
@@ -25,13 +31,15 @@ type Result struct {
 }
 
 type Game struct {
-	Player1 Player `json:"player1"`
-	Player2 Player `json:"player2"`
-	Result  Result `json:"result"`
+	ID        string  `json:"id"`
+	GameState string  `json:"gameState"`
+	Player1   *Player `json:"player1"`
+	Player2   *Player `json:"player2"`
+	Result    *Result `json:"result"`
 }
 
 func (g *Game) PlayVsComputer() {
-	g.Player2 = Player{
+	g.Player2 = &Player{
 		ID:     "computer",
 		Choice: randomChoice(),
 	}
@@ -73,5 +81,5 @@ func (g *Game) Evaluate() {
 		}
 	}
 
-	g.Result = result
+	g.Result = &result
 }
