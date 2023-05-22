@@ -1,12 +1,23 @@
 package main
 
-import "math/rand"
+import (
+	"errors"
+	"math/rand"
+)
 
 const (
 	WaitingForPlayers = "WAITING_FOR_PLAYERS"
 	WaitingForChoices = "WAITING_FOR_CHOICES"
 	Done              = "DONE"
 )
+
+var ErrGameNotFound = errors.New("game not found")
+
+type GameRepository interface {
+	FindByID(id string) (*Game, error)
+	Create(g *Game) (*Game, error)
+	Update(g *Game) (*Game, error)
+}
 
 func choices() []string {
 	return []string{
@@ -22,6 +33,7 @@ func randomChoice() string {
 
 type Player struct {
 	ID     string `json:"id"`
+	Name   string `json:"name"`
 	Choice string `json:"choice"`
 }
 
@@ -38,16 +50,54 @@ type Game struct {
 	Result    *Result `json:"result"`
 }
 
+func (g *Game) AddPlayer(p *Player) error {
+	if g.Player1 == nil {
+		g.Player1 = p
+	} else if g.Player2 == nil {
+		g.Player2 = p
+	}
+
+	g.updateState()
+
+	return nil
+}
+
+func (g *Game) Choose(playerID string, choice string) {
+	if g.Player1.ID == playerID {
+		g.Player1.Choice = choice
+	} else if g.Player2.ID == playerID {
+		g.Player2.Choice = choice
+	}
+
+	g.updateState()
+}
+
 func (g *Game) PlayVsComputer() {
 	g.Player2 = &Player{
 		ID:     "computer",
 		Choice: randomChoice(),
 	}
 
-	g.Evaluate()
+	g.updateState()
 }
 
-func (g *Game) Evaluate() {
+func (g *Game) updateState() {
+
+	if g.Player1 == nil || g.Player2 == nil {
+		g.GameState = WaitingForPlayers
+		return
+	}
+
+	if g.Player1.Choice == "" || g.Player2.Choice == "" {
+		g.GameState = WaitingForChoices
+		return
+	}
+
+	g.evaluate()
+	g.GameState = Done
+}
+
+func (g *Game) evaluate() {
 	result := Result{}
 	if g.Player1.Choice == "scissor" {
 		if g.Player2.Choice == "scissor" {

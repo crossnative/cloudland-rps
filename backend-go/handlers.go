@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 )
 
 func playComputerHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,20 +20,55 @@ func playComputerHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(game)
 }
 
-func createGameHandler(w http.ResponseWriter, r *http.Request) {
-	game := &Game{ID: uuid.NewString(), GameState: WaitingForPlayers}
-	json.NewEncoder(w).Encode(game)
+func createGameHandler(gameRepository GameRepository) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		game, _ := gameRepository.Create(&Game{GameState: WaitingForPlayers})
+		json.NewEncoder(w).Encode(game)
+	}
 }
 
-func joinGameHandler(w http.ResponseWriter, r *http.Request) {
-	gameID, err := uuid.Parse(chi.URLParam(r, "GameID"))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+func readGameHandler(gameRepository GameRepository) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		gameID := chi.URLParam(r, "GameID")
+		game, _ := gameRepository.FindByID(gameID)
+		json.NewEncoder(w).Encode(game)
 	}
+}
 
-	var player Player
-	json.NewDecoder(r.Body).Decode(&player)
+func playerChooseHandler(gameRepository GameRepository) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		gameID := chi.URLParam(r, "GameID")
+		playerID := chi.URLParam(r, "PlayerID")
+		game, _ := gameRepository.FindByID(gameID)
 
-	json.NewEncoder(w).Encode(gameID)
+		var player Player
+		json.NewDecoder(r.Body).Decode(&player)
+
+		game.Choose(playerID, player.Choice)
+
+		gameRepository.Update(game)
+
+		json.NewEncoder(w).Encode(game)
+	}
+}
+
+func joinGameHandler(gameRepository GameRepository) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		gameID := chi.URLParam(r, "GameID")
+
+		var player Player
+		json.NewDecoder(r.Body).Decode(&player)
+
+		game, err := gameRepository.FindByID(gameID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		game.AddPlayer(&player)
+
+		gameRepository.Update(game)
+
+		json.NewEncoder(w).Encode(game)
+	}
 }

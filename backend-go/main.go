@@ -14,10 +14,14 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(cors.AllowAll().Handler)
 
+	gameRepository := NewInMemoryGameRepository()
+
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Post("/play", playComputerHandler)
-		r.Post("/games", createGameHandler)
-		r.Post("/game/{GameID}/players", joinGameHandler)
+		r.Post("/games", createGameHandler(gameRepository))
+		r.Get("/games/{GameID}", readGameHandler(gameRepository))
+		r.Post("/games/{GameID}/players", joinGameHandler(gameRepository))
+		r.Patch("/games/{GameID}/players/{PlayerID}", playerChooseHandler(gameRepository))
 	})
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {

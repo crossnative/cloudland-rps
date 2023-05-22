@@ -53,6 +53,9 @@
       </div>
     </div>
   </div>
+  <div *ngIf="state.game.gameState === 'WAITING_FOR_PLAYERS'">
+    Waiting for other player to join ...
+  </div>
   <div *ngIf="state.game.gameState === 'DONE'">
     <h1>{{ state.game.result.message }}</h1>
     <button type="button" [routerLink]="['/landing']" class="btn btn-light">
