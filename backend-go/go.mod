@@ -8,5 +8,6 @@ require (
 	github.com/go-chi/cors v1.2.1 // indirect
 	github.com/go-chi/render v1.0.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/kelseyhightower/envconfig v1.4.0 // indirect
 	github.com/rs/cors v1.9.0 // indirect
 )

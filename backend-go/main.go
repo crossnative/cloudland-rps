@@ -1,17 +1,26 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/kelseyhightower/envconfig"
 	"github.com/rs/cors"
 )
+
+// Application Configuration
+type Config struct {
+	Port string `envconfig:"PORT",default:"8080"`
+}
 
 func main() {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 	r.Use(cors.AllowAll().Handler)
 
 	gameRepository := NewInMemoryGameRepository()
@@ -28,5 +37,12 @@ func main() {
 		w.Write([]byte("Hello Cloudland!"))
 	})
 
-	http.ListenAndServe(":8080", r)
+	// Read Configuration from Environment Variables
+	var c Config
+	err := envconfig.Process("ros", &c)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	http.ListenAndServe(fmt.Sprintf(":%v", c.Port), r)
 }
