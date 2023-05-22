@@ -13,7 +13,7 @@ import (
 
 // Application Configuration
 type Config struct {
-	Port string `envconfig:"PORT",default:"8080"`
+	Port string `envconfig:"PORT" default:"8080"`
 }
 
 func main() {
@@ -43,6 +43,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	log.Println("listening on", c.Port)
 
 	http.ListenAndServe(fmt.Sprintf(":%v", c.Port), r)
 }
