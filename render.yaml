@@ -1,5 +1,10 @@
 services:
 - type: web
+  plan: free
+  name: backend-spring
+  env: docker
+  rootDir: spring-backend
+- type: web
   name: frontend
   env: static
   rootDir: frontend
