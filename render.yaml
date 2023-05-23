@@ -2,6 +2,7 @@ services:
 - type: web
   name: backend-go
   env: go
+  plan: free
   rootDir: backend-go
   buildCommand: go build -o rps .
   startCommand: ./rps
