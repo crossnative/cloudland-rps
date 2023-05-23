@@ -1,0 +1,7 @@
+services:
+- type: web
+  name: backend-go
+  env: go
+  rootDir: backend-go
+  buildCommand: go build -o rps .
+  startCommand: ./rps
