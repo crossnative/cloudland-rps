@@ -2,7 +2,6 @@ services:
 - type: web
   name: frontend
   env: static
-  plan: free
   rootDir: frontend
   staticPublishPath: ./dist/frontend
   buildCommand: npm run build
