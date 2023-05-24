@@ -22,6 +22,20 @@ Treat backing services as attached resources
 
 ### 7. Port Binding
 
+Export services via port binding
+
+#### Solutions
+* Exposed HTTP service configuratable via `PORT` environment variable.
+
+### 9. Disposablity
+Maximize robustness with fast startup and graceful shutdown.
+
+#### Solutions
+* Health check for app with https://github.com/hellofresh/health-go.
+
+### 10. Dev/prod parity
+Keep development, staging, and production as similar as possible
+
 ### 11. Logs
 Treat logs as event streams.
 
@@ -41,8 +55,9 @@ log.SetOutput(logwriter)
 w.Info("Any log message")
 w.Err("Another log message")
 ```
+### 12. Admin processes
+Run admin/management tasks as one-off processes
 
-Exposed HTTP service configuratable via `PORT` environment variable.
 
 # Links and Docs
 

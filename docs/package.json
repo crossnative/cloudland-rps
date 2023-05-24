@@ -1,0 +1,24 @@
+{
+  "name": "cloudland",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start --server --ss . --watch",
+    "copy": "copyfiles ./node_modules/reveal.js/dist/reset.css ./node_modules/reveal.js/dist/reveal.css ./node_modules/reveal.js/dist/reveal.js ./node_modules/reveal.js/plugin/notes/notes.js ./node_modules/reveal.js/plugin/markdown/markdown.js ./node_modules/reveal.js/plugin/highlight/highlight.js ./node_modules/reveal.js/plugin/zoom/zoom.js ./node_modules/reveal-plantuml/dist/reveal-plantuml.min.js assets/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind:build": "tailwindcss -i ./src/tailwind.input.css -o ./assets/tailwind.min.css",
+    "tailwind:dev": "tailwindcss -i ./src/tailwind.input.css -o ./assets/tailwind.min.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.27.10",
+    "reveal-plantuml": "^1.0.2",
+    "reveal.js": "^4.4.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "tailwindcss": "^3.3.2"
+  }
+}
