@@ -66,6 +66,22 @@ export class AppService {
     );
   }
 
+  createAndJoinGameVsComputer() {
+    return this.httpClient
+      .post<Game>(`${this.backendRoot}/games?mode=PlayerVsComputer`, null)
+      .pipe(
+        switchMap((game) =>
+          this.httpClient.post<Game>(
+            `${this.backendRoot}/games/${game.id}/players`,
+            {
+              id: this.id,
+              name: this.id,
+            } as Player
+          )
+        ),
+        tap((game) => this.nextState(game))
+      );
+  }
   joinGame(gameId: string) {
     return this.httpClient
       .post<Game>(`${this.backendRoot}/games/${gameId}/players`, {

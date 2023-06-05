@@ -57,7 +57,13 @@ paths:
       tags:
         - games
       description: ''
-      parameters: []
+      parameters:
+        - in: query
+          name: mode
+          schema:
+            type: string
+            enum: [PlayerVsComputer]
+          description: The mode of the game.
       responses:
         '200':
           description: OK

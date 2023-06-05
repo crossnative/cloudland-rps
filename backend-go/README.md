@@ -25,7 +25,7 @@ Treat backing services as attached resources
 Export services via port binding
 
 #### Solutions
-* Exposed HTTP service configuratable via `PORT` environment variable.
+* Exposed HTTP service configurable via `PORT` environment variable.
 
 ### 9. Disposablity
 Maximize robustness with fast startup and graceful shutdown.

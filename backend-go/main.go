@@ -26,7 +26,6 @@ func main() {
 	gameRepository := NewInMemoryGameRepository()
 
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Post("/play", playComputerHandler)
 		r.Post("/games", createGameHandler(gameRepository))
 		r.Get("/games/{GameID}", readGameHandler(gameRepository))
 		r.Post("/games/{GameID}/players", joinGameHandler(gameRepository))

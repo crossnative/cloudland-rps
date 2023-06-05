@@ -9,6 +9,8 @@ const (
 	WaitingForPlayers = "WAITING_FOR_PLAYERS"
 	WaitingForChoices = "WAITING_FOR_CHOICES"
 	Done              = "DONE"
+
+	ModePlayerVsComputer = "PlayerVsComputer"
 )
 
 var ErrGameNotFound = errors.New("game not found")
@@ -23,7 +25,7 @@ func choices() []string {
 	return []string{
 		"rock",
 		"paper",
-		"scissor",
+		"scissors",
 	}
 }
 
@@ -74,18 +76,21 @@ func (g *Game) Choose(playerID string, choice string) {
 
 func (g *Game) PlayVsComputer() {
 	g.Player2 = &Player{
-		ID:     "computer",
-		Choice: randomChoice(),
+		ID:   "computer",
+		Name: "Computer",
 	}
 
 	g.updateState()
 }
 
 func (g *Game) updateState() {
-
 	if g.Player1 == nil || g.Player2 == nil {
 		g.GameState = WaitingForPlayers
 		return
+	}
+
+	if g.Player2.ID == "computer" {
+		g.Player2.Choice = randomChoice()
 	}
 
 	if g.Player1.Choice == "" || g.Player2.Choice == "" {
@@ -99,20 +104,20 @@ func (g *Game) updateState() {
 
 func (g *Game) evaluate() {
 	result := Result{}
-	if g.Player1.Choice == "scissor" {
-		if g.Player2.Choice == "scissor" {
+	if g.Player1.Choice == "scissors" {
+		if g.Player2.Choice == "scissors" {
 			result.Message = "Draw"
 		} else if g.Player2.Choice == "rock" {
 			result.WinnerID = g.Player2.ID
-			result.Message = "Rock destroys scissor"
+			result.Message = "Rock destroys scissors"
 		} else if g.Player2.Choice == "paper" {
 			result.WinnerID = g.Player1.ID
 			result.Message = "Scissor cuts paper"
 		}
 	} else if g.Player1.Choice == "rock" {
-		if g.Player2.Choice == "scissor" {
+		if g.Player2.Choice == "scissors" {
 			result.WinnerID = g.Player1.ID
-			result.Message = "Rock destroys scissor"
+			result.Message = "Rock destroys scissors"
 		} else if g.Player2.Choice == "rock" {
 			result.Message = "Draw"
 		} else if g.Player2.Choice == "paper" {
@@ -120,9 +125,9 @@ func (g *Game) evaluate() {
 			result.Message = "Paper wraps rock"
 		}
 	} else if g.Player1.Choice == "paper" {
-		if g.Player2.Choice == "scissor" {
+		if g.Player2.Choice == "scissors" {
 			result.WinnerID = g.Player2.ID
-			result.Message = "Scissor cuts paper"
+			result.Message = "Scissors cuts paper"
 		} else if g.Player2.Choice == "rock" {
 			result.WinnerID = g.Player1.ID
 			result.Message = "Paper wraps rock"

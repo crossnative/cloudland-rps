@@ -7,7 +7,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 @Component({
   selector: 'app-result',
   templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss'],
 })
 export class ResultComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$: Subject<void> = new Subject();

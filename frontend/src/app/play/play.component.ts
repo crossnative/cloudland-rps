@@ -1,17 +1,44 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Game, Player } from '../models';
+import { switchMap } from 'rxjs';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-play',
   templateUrl: './play.component.html',
-  styleUrls: ['./play.component.scss'],
 })
 export class PlayComponent {
-  constructor(private router: Router) {}
+  id = this.appService.id;
 
-  onChoose(choice: string) {
-    this.router.navigate(['/choice', choice], {
-      skipLocationChange: true,
-    });
+  gameId: string = '';
+
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient,
+    private appService: AppService
+  ) {}
+
+  onNewGame() {
+    this.appService
+      .createAndJoinGame()
+      .subscribe((game) => this.router.navigate(['/game', game.id]));
+  }
+
+  onNewGameVsComputer() {
+    this.appService
+      .createAndJoinGameVsComputer()
+      .subscribe((game) => this.router.navigate(['/game', game.id]));
+  }
+
+  onJoinGame() {
+    if (!this.gameId) {
+      return;
+    }
+
+    this.appService
+      .joinGame(this.gameId)
+      .subscribe((game) => this.router.navigate(['/game', game.id]));
   }
 }
