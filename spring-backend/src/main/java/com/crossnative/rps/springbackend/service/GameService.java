@@ -2,6 +2,7 @@ package com.crossnative.rps.springbackend.service;
 
 import com.crossnative.rps.springbackend.model.Game;
 import com.crossnative.rps.springbackend.model.Player;
+import java.awt.Choice;
 import java.util.UUID;
 
 public interface GameService {
@@ -13,4 +14,6 @@ public interface GameService {
   Game joinGame(UUID gameId, Player player);
 
   Game registerPlayerChoice(UUID gameId, UUID playerId, String choice);
+
+  void pickRandomChoice(Player player);
 }

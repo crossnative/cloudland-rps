@@ -5,12 +5,15 @@ import com.crossnative.rps.springbackend.model.GameResult;
 import com.crossnative.rps.springbackend.model.Player;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RpsGameService implements GameService {
+
+  private static final Random RANDOM = new Random();
 
   private final Map<UUID, Game> rpsGames = new HashMap<>();
 
@@ -40,6 +43,12 @@ public class RpsGameService implements GameService {
     final var game = this.rpsGames.get(gameId);
     game.addPlayer(player);
     return game;
+  }
+
+  @Override
+  public void pickRandomChoice(Player player) {
+    var choices = Choice.values();
+    player.setChoice(choices[RANDOM.nextInt(choices.length)].toString());
   }
 
   @Override

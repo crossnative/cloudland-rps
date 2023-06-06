@@ -29,5 +29,12 @@ public class Player {
     this.choice = choice.toUpperCase();
   }
 
+  public static Player getComputerPlayer() {
+    var computer = new Player();
+    computer.setId(UUID.randomUUID());
+    computer.setName("Computer");
+    return computer;
+  }
+
 
 }
