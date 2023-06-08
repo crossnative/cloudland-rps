@@ -9,7 +9,7 @@ import (
 
 func createGameHandler(gameRepository GameRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		game, _ := gameRepository.Create(&Game{GameState: WaitingForPlayers})
+		game, _ := gameRepository.Create(NewGame())
 
 		mode := r.URL.Query().Get("mode")
 		if mode == ModePlayerVsComputer {

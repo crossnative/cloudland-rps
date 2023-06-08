@@ -52,6 +52,10 @@ type Game struct {
 	Result    *Result `json:"result"`
 }
 
+func NewGame() *Game {
+	return &Game{GameState: WaitingForPlayers}
+}
+
 func (g *Game) AddPlayer(p *Player) error {
 	if g.Player1 == nil {
 		g.Player1 = p
