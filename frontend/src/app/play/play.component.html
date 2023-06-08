@@ -1,12 +1,22 @@
-<button type="button" (click)="onNewGame()" class="btn btn-light">
-  New game
-</button>
-<button type="button" (click)="onNewGameVsComputer()" class="btn btn-light">
-  New game vs. computer
-</button>
+<h1>Let's play Rock, Paper, Scissors!</h1>
+
+<h3>Backend URL</h3>
+<input (ngModelChange)="onBackendUrlUpdate($event)" [(ngModel)]="backendUrl" type="text" />
 
 <hr />
 
+<h3>Play Game</h3>
+
+<button type="button" (click)="onNewGameVsComputer()" class="btn btn-light">
+  New Game vs. Computer
+</button>
+
+<br>
+<button type="button" (click)="onNewGame()" class="btn btn-light">
+  New Game
+</button>
+
+<br>
 <input [(ngModel)]="gameId" type="text" />
 
 <button type="button" (click)="onJoinGame()" class="btn btn-light">

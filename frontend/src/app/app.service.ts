@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Game, Player } from './models';
 import {
   BehaviorSubject,
-  ReplaySubject,
-  delay,
   repeat,
   switchMap,
   takeWhile,
@@ -16,7 +14,7 @@ import {
   providedIn: 'root',
 })
 export class AppService {
-  private readonly backendRoot = 'http://localhost:8080/api/v1';
+  backendRoot = 'http://localhost:8080/api/v1';
 
   id: string = uuidv4();
 
@@ -109,6 +107,10 @@ export class AppService {
         choice: choice,
       },
     });
+  }
+
+  updateBackendUrl (newBackendUrl: string) {
+    this.backendRoot = newBackendUrl;
   }
 
   private nextState(game: Game, choice?: string) {

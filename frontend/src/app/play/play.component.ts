@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Game, Player } from '../models';
-import { switchMap } from 'rxjs';
 import { AppService } from '../app.service';
 
 @Component({
@@ -12,6 +10,7 @@ import { AppService } from '../app.service';
 export class PlayComponent {
   id = this.appService.id;
 
+  backendUrl: string = this.appService.backendRoot;
   gameId: string = '';
 
   constructor(
@@ -19,7 +18,7 @@ export class PlayComponent {
     private httpClient: HttpClient,
     private appService: AppService
   ) {}
-
+  
   onNewGame() {
     this.appService
       .createAndJoinGame()
@@ -40,5 +39,9 @@ export class PlayComponent {
     this.appService
       .joinGame(this.gameId)
       .subscribe((game) => this.router.navigate(['/game', game.id]));
+  }
+
+  onBackendUrlUpdate(newBackendUrl: string) {
+    this.appService.updateBackendUrl(newBackendUrl);
   }
 }
