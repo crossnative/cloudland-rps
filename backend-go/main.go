@@ -5,8 +5,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/carlmjohnson/versioninfo"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/hellofresh/health-go/v5"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/rs/cors"
 )
@@ -31,6 +33,15 @@ func main() {
 		r.Post("/games/{GameID}/players", joinGameHandler(gameRepository))
 		r.Patch("/games/{GameID}/players/{PlayerID}", playerChooseHandler(gameRepository))
 	})
+
+	// Register Health Check
+	h, _ := health.New(health.WithSystemInfo(), health.WithComponent(health.Component{
+		Name:    "rps",
+		Version: fmt.Sprintf("%v (%v)", versioninfo.Version, versioninfo.Revision),
+	}))
+
+	// Register Health Check Handler Function
+	r.Get("/health", h.HandlerFunc)
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello Cloudland!"))
