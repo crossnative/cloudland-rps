@@ -40,7 +40,7 @@
       <textarea data-template>
         ## What are we going to do?
         - Design a RESTful API for rock, paper, scissors
-        - Learn more about GO/ Spring
+        - Learn more about Go/Spring
         - Learn about cloud-native development
       </textarea>
     </section>
@@ -49,7 +49,7 @@
       <textarea data-template>
         ## How are we going to do it?
           - You may work in groups
-          - Two sessions (GO and Spring)
+          - 2 sessions: Go and Spring
           - Collaborative programming of the API
           - Frontend for interaction is provided
           - Successive fishbowl for discussing results
@@ -62,94 +62,267 @@
           - Design an API for playing rock, paper, scissors according to specification TODO: OpenAPI Link
           - Use frontend to test out implemented features
           - Look into aspects of cloud-native programming for designed application
-      </textarea>
-    </section>
+        </textarea>
+      </section>
+      
+      <section>
+        <h2>Project Overview</h2>
+        <img src="./themes/rps-architecture.png" />
+      </section>
+      
+      <section>
+        <h2>Demo</h2>
+      </section>
+      
+      <section>
+        <h1>Split into Session</h1>
+        <ol>
+          <li>Go</li>
+          <li>Spring</li>
+        </ol>
+      </section>
+      
+      <section>
+        <section>
+          <h1>Go Session</h1>
+        </section>
+        <section style="text-align: left;">
+          <h2>Prerequisites Go Session</h2>
+          <div style="font-size: 70%;">
 
-    <section>
-      <h2>Project Overview</h2>
-      TODO: Insert Architecture Overview here
-    </section>
+          <ul>
+            <li>Editor <a href="https://code.visualstudio.com/download">Visual Studio Code</a></li>
+            <li><a href="https://www.postman.com/">Postman</a></li>
+          </ul>
+          <h3 style="margin: 15px 0 5px 0;">Go</h3>
+          <ul>
+            <li><a href="https://go.dev/">Go Compiler</a></li>
+            <li>optional: <a href="https://github.com/cosmtrek/air">air</a> for hot reload <br/> <code>go install github.com/cosmtrek/air@latest</code></li>
+          </ul>
+          <h3 style="margin: 15px 0 5px 0;">Frontend</h3>
+          <ul>
+            <li><a href="https://nodejs.org/en/download">Node.js</a></li>
+          </ul>
+          </div>
+        </section>
+        <section>
+          <h2>First Steps in Go</h2>
+          <ol>
+            <li>Get up and running</li>
+            <li>Complete REST API</li>
+            <li><a href="#/go-cloud-native-path">Make Cloud Native</a> or add <a href="#/rps-feature-ideas">your Features</a></li>
+          </ol>
+        </section>
+        <section id="go-cloud-native-path">
+          <h2>Go Cloud Native Path</h2>
+          <div class="grid grid-cols-12 gap-1 content-start">
+            <div class="col-span-6">
+              <ul>
+                <li><a href="#/cheat-port-from-env">Configure Port from Environment Variable</a></li>
+                <li><a href="#/cheat-handle-errors">Handle Errors properly</a></li>
+                <li><a href="#/cheat-middleware-logging-recovery">Middleware for Logging and Recovery</a></li>
+                <li><a href="#/cheat-health-check">Add a Health Check</a></li>
+              </ul>
+            </div>
+            <div class="col-span-6">
+              <ul>
+                <li><a href="#/cheat-run-in-container">Run in Container</a></li>
+                <li><a href="#/cheat-postgres-storage">Use PostgreSQL for Storage</a></li>
+                <li><a href="#/cheat-cloud-deployment">Deploy to the cloud</a></li>
+                <li>...</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section id="cheat-middleware-logging-recovery">
+          <h2><small>Cheatsheet</small> Middleware for Logging and Recovery</h2>
+          Using middlewares from chi router or others.
+          <pre><code data-trim data-noescape class="go">
+r := chi.NewRouter()
+r.Use(middleware.Logger)
+r.Use(middleware.Recoverer)
+          </code></pre>
+          <ul>
+            <li>What does the recovery middleware do?</li>
+            <li>Bonus: How can you set a request timeout using middleware?</li>
+          </ul>          
+        </section>        
+        <section id="cheat-port-from-env">
+          <h2><small>Cheatsheet</small> Configure Port <br/> from Environment Variable </h2>
+          Using the Standard Library
+          <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
+func main() {
+    http.ListenAndServe(fmt.Sprintf(":%v", os.Getenv("PORT")), r)
+}
+          </code></pre>
+          <h4 class="cross-red">Using envconfig</h4>
+          <code>github.com/kelseyhightower/envconfig</code>
+          <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
+// Application Configuration
+type Config struct {
+	Port string `envconfig:"PORT" default:"8080"`
+}
 
-    <section>
-      <h2>Demo</h2>
-    </section>
+func main() {
+    http.ListenAndServe(fmt.Sprintf(":%v", c.Port), r)
+}     
+          </code></pre>
+        </section>
+        <section id="cheat-handle-errors">
+          <h2><small>Cheatsheet</small> Handle Errors properly</h2>
+          <h4 class="cross-red">Using the Standard Library</h4>
+          <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
+  if err != nil {
+    http.Error(w, "Oops, that went wrong!", http.StatusInternalServerError)
+    return
+  }
+          </code></pre>
+          <h4 class="cross-red">Using Problem for HTTP APIs</h4>                   
+          Use <a href=" https://www.rfc-editor.org/rfc/rfc7807">rfc7807</a> with <code>schneider.vip/problem</code>
+        <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
+if err != nil {
+  problem.New(
+            problem.Wrap(err), 
+            problem.Status(http.StatusInternalServerError)
+          ).WriteTo(w)
+  return
+}        </code></pre>
+        </section>
+        <section id="cheat-run-in-container">
+          <h2><small>Cheatsheet</small> Run in Container</h2>
+        <pre style="font-size: 0.44em;"><code data-trim data-noescape>
+# 1. RPS Builder
+FROM golang as builder
+WORKDIR /app
+ADD . /app
+RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o build/rps .
 
-    <section>
-      <h1>Split into Session</h1>
-      <ol>
-        <li>GO</li>
-        <li>Spring</li>
-      </ol>
-    </section>
+# 2. RPS Container
+FROM alpine
+COPY --from=builder /app/build/rps /usr/bin/
+EXPOSE 8080
+ENTRYPOINT ["/usr/bin/rps"]
+        </code></pre>
+        </section>
+        <section id="cheat-health-check">
+          <h2><small>Cheatsheet</small> Add a Health Check</h2>
+          See <code>github.com/hellofresh/health-go/v5</code>.
+        <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
+	// Register Health Check
+	h, _ := health.New(health.WithChecks(
+		health.Config{
+			Name:      "db",
+			Timeout:   time.Second * 2,
+			SkipOnErr: false,
+			Check: healthPgx.New(healthPgx.Config{
+				DSN: config.Db,
+			}),
+		},
+	))
 
-    <section>
-      <h2>Go Session</h2>
-      ...
-    </section>
-
-    <section>
-      <h2>Spring Session</h2>
-      ...
-    </section>
-
-    <section data-markdown>
-      <textarea data-template>
-        # Prerequisites
-        - Some kind of IDE (e.g. [IntelliJ](https://www.jetbrains.com/idea/download) or [Visual Studio Code](https://code.visualstudio.com/download))
-        - Postman
-
-        ## GO
-        - [Go Compiler](https://go.dev/)
-        - optional: [air](https://github.com/cosmtrek/air) for hot reload `go install github.com/cosmtrek/air@latest`
-
-        ## Spring
-        - Java JDK installed (e.g. [Temurin](https://adoptium.net/de/temurin/releases/))
-
-        ## Prerequisites Frontend
-        - [Node.js](https://nodejs.org/en/download) and npm (included in installation)
-        - AngularCLI (`npm install -g @angular/cli`)
-      </textarea>
-    </section>
-
-    <section data-markdown>
-         <textarea data-template>
-          # Interesting Links
+	// Register Health Check Handler Function
+	r.Get("/health", h.HandlerFunc)
+                </code></pre>
+                      </section>
+        <section id="cheat-postgres-storage">
+          <h2><small>Cheatsheet</small> Use PostgreSQL for Storage</h2>
+          <ul>
+            <li><a href="https://www.sohamkamani.com/golang/sql-database/">SQL Tutorial with Go</a></li>
+            <li><a href="https://github.com/jackc/pgx">PostgreSQL Driver PGX</a></li>
+            <li>Sample application <a href="https://github.com/remast/dogop/blob/main/offer.go"><code>offer</code></a></li>
+          </ul>
+        </section>
+        <section id="cheat-cloud-deployment">
+          <h2><small>Cheatsheet</small> Cloud Deployment</h2>
+          Example Deployment for <a href="https://render.com/">render</a>
+        <pre style="font-size: 0.44em;"><code data-trim data-noescape>
+services:
+- type: web
+  name: backend-go
+  env: go
+  plan: free
+  rootDir: backend-go
+  buildCommand: go build -o rps .
+  startCommand: ./rps
+                </code></pre>
+        </section>
+      </section>
+      
+      <section>
+        <h2>Spring Session</h2>
+        ...
+      </section>
+      
+      <section data-markdown>
+        <textarea data-template>
+          # Prerequisites
+          - Some kind of IDE (e.g. [IntelliJ](https://www.jetbrains.com/idea/download) or [Visual Studio Code](https://code.visualstudio.com/download))
+          - Postman
+          
+          ## Go
+          - [Go Compiler](https://go.dev/)
+          - optional: [air](https://github.com/cosmtrek/air) for hot reload `go install github.com/cosmtrek/air@latest`
+          
+          ## Spring
+          - Java JDK installed (e.g. [Temurin](https://adoptium.net/de/temurin/releases/))
+          
+          ## Prerequisites Frontend
+          - [Node.js](https://nodejs.org/en/download) and npm (included in installation)
+          - AngularCLI (`npm install -g @angular/cli`)
+        </textarea>
+      </section>
+      <section id="rps-feature-ideas">
+        <h2>Feature Ideas <small>Rock, Paper, Scissors</small></h2>
+        <ul>
+          <li>Add a leaderboard with top 10 Players</li>
+          <li>Make Game realtime (e.g. WebSocket, ...)</li>
+          <li>Enhance to <a href="http://www.samkass.com/theories/RPSSL.htmv">Rock, Paper, Scissors, Spock, Lizard</a></li>
+          <li>Add rooms people can play many Games in</li>
+          <li>...</li>
+        </ul>
+      </section>
+      
+      <section data-markdown>
+        <textarea data-template>
+          ## Interesting Links
           - [The Twelve Factor App](https://12factor.net/de/)
           - [Beyond the Twelve Factor App](https://tanzu.vmware.com/content/blog/beyond-the-twelve-factor-app)
-         </textarea>
-    </section>
-
-    <section>
-      <div class="grid grid-cols-2 gap-1 text-left">
-        <div>
-          <img
-              src="./themes/JanStamer_profil_schmal.png"
-              class="object-scale-down h-80"
-              style="margin-top: 0"
-          />
-        </div>
-        <div>
-          <h2 style="margin-bottom: 0">Jan Stamer</h2>
-          <div class="mb-10">
-            <a
-                href="mailto:jan.stamer@crossnative.com"
-                style="font-size: 85%"
-            >jan.stamer@crossnative.com</a
-            >
+          - [Cloud-native entwickeln mit Go](https://entwickler.de/go/cloud-native-go)
+          - [Building a Multiplayer Game with API Gateway+Websockets, Go and DynamoDB](https://serialized.net/2020/09/multiplayer/)
+        </textarea>
+      </section>
+      
+      <section>
+        <div class="grid grid-cols-2 gap-1 text-left">
+          <div>
+            <img
+            src="./themes/JanStamer_profil_schmal.png"
+            class="object-scale-down h-80"
+            style="margin-top: 0"
+            />
           </div>
-          <div class="grid grid-cols-4 gap-1 text-left">
-            <div>
-              <a href="https://www.linkedin.com/in/jan-stamer">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="72"
-                    height="72"
-                >
+          <div>
+            <h2 style="margin-bottom: 0">Jan Stamer</h2>
+            <div class="mb-10">
+              <a
+              href="mailto:jan.stamer@crossnative.com"
+              style="font-size: 85%"
+              >jan.stamer@crossnative.com</a
+              >
+            </div>
+            <div class="grid grid-cols-4 gap-1 text-left">
+              <div>
+                <a href="https://www.linkedin.com/in/jan-stamer">
+                  <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="72"
+                  height="72"
+                  >
                   <path fill="none" d="M0 0h24v24H0z" />
                   <path
-                      d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z"
-                      fill="rgba(255,255,255,1)"
+                  d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z"
+                  fill="rgba(255,255,255,1)"
                   />
                 </svg>
               </a>
@@ -157,78 +330,78 @@
             <div>
               <a href="https://github.com/remast/">
                 <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="72"
-                    height="72"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="72"
+                height="72"
                 >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                      d="M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z"
-                      fill="rgba(255,255,255,1)"
-                  />
-                </svg>
-              </a>
-            </div>
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                d="M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z"
+                fill="rgba(255,255,255,1)"
+                />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-1 text-left">
-        <div>
-          <img
-              src="./themes/LenaGrimm_profil_schmal.jpg"
-              class="object-scale-down h-80"
-              style="margin-top: 0"
-          />
+    </div>
+    <div class="grid grid-cols-2 gap-1 text-left">
+      <div>
+        <img
+        src="./themes/LenaGrimm_profil_schmal.jpg"
+        class="object-scale-down h-80"
+        style="margin-top: 0"
+        />
+      </div>
+      <div>
+        <h2 style="margin-bottom: 0">Lena Grimm</h2>
+        <div class="mb-10">
+          <a
+          href="mailto:lena.grimm@crossnative.com"
+          style="font-size: 85%"
+          >lena.grimm@crossnative.com</a
+          >
+        </div>
+        <div class="grid grid-cols-4 gap-1 text-left">
+          <div>
+            <a href="https://www.linkedin.com/in/lena-grimm-68058426a/">
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="72"
+              height="72"
+              >
+              <path fill="none" d="M0 0h24v24H0z"/>
+              <path
+              d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z"
+              fill="rgba(255,255,255,1)"
+              />
+            </svg>
+          </a>
         </div>
         <div>
-          <h2 style="margin-bottom: 0">Lena Grimm</h2>
-          <div class="mb-10">
-            <a
-                href="mailto:lena.grimm@crossnative.com"
-                style="font-size: 85%"
-            >lena.grimm@crossnative.com</a
+          <a href="https://github.com/lena-grimm">
+            <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="72"
+            height="72"
             >
-          </div>
-          <div class="grid grid-cols-4 gap-1 text-left">
-            <div>
-              <a href="https://www.linkedin.com/in/lena-grimm-68058426a/">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="72"
-                    height="72"
-                >
-                  <path fill="none" d="M0 0h24v24H0z"/>
-                  <path
-                      d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z"
-                      fill="rgba(255,255,255,1)"
-                  />
-                </svg>
-              </a>
-            </div>
-            <div>
-              <a href="https://github.com/lena-grimm">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="72"
-                    height="72"
-                >
-                  <path fill="none" d="M0 0h24v24H0z"/>
-                  <path
-                      d="M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z"
-                      fill="rgba(255,255,255,1)"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
+            <path fill="none" d="M0 0h24v24H0z"/>
+            <path
+            d="M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z"
+            fill="rgba(255,255,255,1)"
+            />
+          </svg>
+        </a>
       </div>
-    </section>
-
+    </div>
   </div>
+</div>
+</section>
+
+</div>
 </div>
 <script src="./assets/node_modules/reveal.js/dist/reveal.js"></script>
 <script src="./assets/node_modules/reveal.js/plugin/notes/notes.js"></script>
@@ -241,7 +414,7 @@
     pdfSeparateFragments: false,
     navigationMode: "linear",
     dependencies: [
-      { src: "./node_modules/reveal-plantuml/dist/reveal-plantuml.min.js" },
+    { src: "./node_modules/reveal-plantuml/dist/reveal-plantuml.min.js" },
     ],
     hash: true,
     plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom],
