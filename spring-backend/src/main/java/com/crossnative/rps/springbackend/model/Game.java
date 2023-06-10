@@ -15,19 +15,12 @@ import lombok.Data;
 @JsonInclude(value = Include.NON_NULL)
 public class Game {
 
-  public enum GameState {
-    WAITING_FOR_PLAYERS,
-    WAITING_FOR_CHOICES,
-    DONE
-  }
-
+  @JsonIgnore
+  private final BiFunction<Player, Player, GameResult> evaluateResult;
   private UUID id = UUID.randomUUID();
 
   @JsonIgnore
   private List<Player> players = new ArrayList<>();
-
-  @JsonIgnore
-  private final BiFunction<Player, Player, GameResult> evaluateResult;
 
   public Game(final BiFunction<Player, Player, GameResult> evaluateResult) {
     this.evaluateResult = evaluateResult;
@@ -89,4 +82,9 @@ public class Game {
         .orElseThrow(() -> new IllegalArgumentException("Player is not part of this game!"));
   }
 
+  public enum GameState {
+    WAITING_FOR_PLAYERS,
+    WAITING_FOR_CHOICES,
+    DONE
+  }
 }
