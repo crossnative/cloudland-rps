@@ -75,15 +75,15 @@
       </section>
       
       <section>
-        <h1>Split into Session</h1>
-        <ol>
-          <li>Go</li>
-          <li>Spring</li>
-        </ol>
+        <h2>Split into Session</h2>
+        <ul>
+          <li><a href="#/go">Go Session</a></li>
+          <li><a href="#/spring">Spring Session</a></li>
+        </ul>
       </section>
-      
+
       <section>
-        <section>
+        <section id="go">
           <h1>Go Session</h1>
         </section>
         <section style="text-align: left;">
@@ -249,30 +249,32 @@ services:
                 </code></pre>
         </section>
       </section>
-      
+
+
       <section>
-        <h2>Spring Session</h2>
-        ...
+        <section id="spring">
+          <h1>Spring Session</h1>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>Prerequisites Spring Session</h2>
+          <div style="font-size: 70%;">
+
+            <ul>
+              <li>Install some IDE (e.g. <a href="https://www.jetbrains.com/idea/download">IntelliJ</a> or <a href="https://code.visualstudio.com/download">Visual Studio Code</a>)</li>
+              <li>Install <a href="https://www.postman.com/">Postman</a></li>
+              <li>Install Java JDK (e.g. <a href="https://adoptium.net/de/temurin/releases/">Temurin</a>)</li>
+              <li>Clone <a href="https://github.com/crossnative/cloudland-rps">github.com/crossnative/cloudland-rps</a> and checkout branch <code>spring-start</code></li>
+            </ul>
+            <h3 style="margin: 15px 0 5px 0;">Frontend</h3>
+            <ul>
+              <li><a href="https://nodejs.org/en/download">Node.js</a> (npm is included)</li>
+            </ul>
+          </div>
+        </section>
+
       </section>
-      
-      <section data-markdown>
-        <textarea data-template>
-          # Prerequisites
-          - Some kind of IDE (e.g. [IntelliJ](https://www.jetbrains.com/idea/download) or [Visual Studio Code](https://code.visualstudio.com/download))
-          - Postman
-          
-          ## Go
-          - [Go Compiler](https://go.dev/)
-          - optional: [air](https://github.com/cosmtrek/air) for hot reload `go install github.com/cosmtrek/air@latest`
-          
-          ## Spring
-          - Java JDK installed (e.g. [Temurin](https://adoptium.net/de/temurin/releases/))
-          
-          ## Prerequisites Frontend
-          - [Node.js](https://nodejs.org/en/download) and npm (included in installation)
-          - AngularCLI (`npm install -g @angular/cli`)
-        </textarea>
-      </section>
+
       <section id="rps-feature-ideas">
         <h2>Feature Ideas <small>Rock, Paper, Scissors</small></h2>
         <ul>
@@ -284,16 +286,16 @@ services:
         </ul>
       </section>
       
-      <section data-markdown>
-        <textarea data-template>
-          ## Interesting Links
-          - [The Twelve Factor App](https://12factor.net/de/)
-          - [Beyond the Twelve Factor App](https://tanzu.vmware.com/content/blog/beyond-the-twelve-factor-app)
-          - [Cloud-native entwickeln mit Go](https://entwickler.de/go/cloud-native-go)
-          - [Building a Multiplayer Game with API Gateway+Websockets, Go and DynamoDB](https://serialized.net/2020/09/multiplayer/)
-        </textarea>
+      <section>
+        <h2>Interesting Links</h2>
+        <ul>
+          <li><a href="https://12factor.net/de/">The Twelve Factor App</a></li>
+          <li><a href="https://tanzu.vmware.com/content/blog/beyond-the-twelve-factor-app">Beyond the Twelve Factor App</a></li>
+          <li><a href="https://entwickler.de/go/cloud-native-go">Cloud-native entwickeln mit Go</a></li>
+          <li><a href="https://serialized.net/2020/09/multiplayer/">Building a Multiplayer Game with API Gateway+Websockets, Go and DynamoDB</a></li>
+        </ul>
       </section>
-      
+
       <section>
         <div class="grid grid-cols-2 gap-1 text-left">
           <div>
@@ -414,7 +416,7 @@ services:
   Reveal.initialize({
     transition: "slide",
     pdfSeparateFragments: false,
-    navigationMode: "linear",
+    navigationMode: "default",
     dependencies: [
     { src: "./node_modules/reveal-plantuml/dist/reveal-plantuml.min.js" },
     ],
