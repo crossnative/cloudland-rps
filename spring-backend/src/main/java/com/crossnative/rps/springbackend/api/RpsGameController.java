@@ -23,21 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class RpsGameController {
 
-  private static final String PLAYER_VS_COMPUTER = "PlayerVsComputer";
-
   private GameService gameService;
 
   @PostMapping
   public Game createGame(@RequestParam(required = false) String mode) {
     log.info("Received POST on api/v1/games");
-    var game = this.gameService.createGame();
+    // TODO: Player vs Computer Mode
 
-    if (PLAYER_VS_COMPUTER.equals(mode)) {
-      var player = Player.getComputerPlayer();
-      gameService.pickRandomChoice(player);
-      gameService.joinGame(game.getId(), player);
-    }
-    return game;
+    return this.gameService.createGame();
   }
 
   @PostMapping("/{gameId}/players")
@@ -48,10 +41,9 @@ public class RpsGameController {
   }
 
   @PatchMapping("{gameId}/players/{playerId}")
-  public Game choose(@PathVariable final UUID gameId,
-      @PathVariable final UUID playerId, @RequestBody final Player playerUpdate) {
-    log.info("Received PATCH on api/v1/games/{id}/players");
-    return this.gameService.registerPlayerChoice(gameId, playerId, playerUpdate.getChoice());
+  public Game choose() {
+    // TODO: Choose
+    return null;
   }
 
   @GetMapping("/{id}")

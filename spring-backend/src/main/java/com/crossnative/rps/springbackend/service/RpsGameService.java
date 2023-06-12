@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RpsGameService implements GameService {
 
-  private static final Random RANDOM = new Random();
-
   private final Map<UUID, Game> rpsGames = new HashMap<>();
 
   private static GameResult evaluate(final Player player1, final Player player2) {
@@ -55,19 +53,14 @@ public class RpsGameService implements GameService {
 
   @Override
   public void pickRandomChoice(Player player) {
-    log.debug("Picking a random game choice...");
-    var choices = Choice.values();
-    player.setChoice(choices[RANDOM.nextInt(choices.length)].toString());
+    // Not implemented yet
   }
 
   @Override
   public Game registerPlayerChoice(final UUID gameId, final UUID playerId,
       final String choice) {
-    log.debug("Registering player choice...");
-    final var game = this.rpsGames.get(gameId);
-    final var choosingPlayer = game.getPlayer(playerId);
-    choosingPlayer.setChoice(Choice.valueOf(choice.toUpperCase()).name());
-    return game;
+    // Not implemented yet
+    return null;
   }
 
   @AllArgsConstructor
