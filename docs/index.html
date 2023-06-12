@@ -257,9 +257,8 @@ services:
         </section>
 
         <section style="text-align: left;">
-          <h2>Prerequisites Spring Session</h2>
+          <h2>Prerequisites <small>Spring Session</small></h2>
           <div style="font-size: 70%;">
-
             <ul>
               <li>Install some IDE (e.g. <a href="https://www.jetbrains.com/idea/download">IntelliJ</a> or <a href="https://code.visualstudio.com/download">Visual Studio Code</a>)</li>
               <li>Install <a href="https://www.postman.com/">Postman</a></li>
@@ -270,6 +269,38 @@ services:
             <ul>
               <li><a href="https://nodejs.org/en/download">Node.js</a> (npm is included)</li>
             </ul>
+          </div>
+        </section>
+
+        <section style="font-size: 70%;">
+          <h2>First Steps <small>Spring Session</small></h2>
+          <ol>
+            <li>Run local Frontend together with example backend </br> <code>https://backend-spring.onrender.com/api/v1</code></li>
+            <li>Build and Run Spring Backend</li>
+            <li>Implement REST API</li>
+            <li><a href="#/spring-cloud-native-path">Make Cloud Native</a> or add <a href="#/rps-feature-ideas">further Features</a></li>
+          </ol>
+        </section>
+
+        <section id="spring-cloud-native-path">
+          <h2>Spring Cloud Native Path</h2>
+          <div class="grid grid-cols-12 gap-1 content-start">
+            <div class="col-span-6">
+              <ul>
+                <li><a href="https://www.baeldung.com/spring-boot-properties-env-variables">Configurable Application Port</a></li>
+                <li><a href="https://www.baeldung.com/exception-handling-for-rest-with-spring">Http Error Handler</a></li>
+                <li><a href="https://www.baeldung.com/spring-boot-logging">Configure proper logging</a></li>
+                <li><a href="https://www.baeldung.com/spring-boot-actuators">Health Check</a></li>
+              </ul>
+            </div>
+            <div class="col-span-6">
+              <ul>
+                <li><a href="https://www.baeldung.com/dockerizing-spring-boot-application">Run in Container</a></li>
+                <li><a href="https://www.baeldung.com/spring-boot-postgresql-docker">Use Database for persistence</a></li>
+                <li><a href="https://github.com/crossnative/cloudland-rps/blob/spring-start/render.yaml">Deploy to the Cloud</a></li>
+                <li>...</li>
+              </ul>
+            </div>
           </div>
         </section>
 
