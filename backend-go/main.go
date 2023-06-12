@@ -56,5 +56,8 @@ func main() {
 
 	log.Println("listening on", c.Port)
 
-	http.ListenAndServe(fmt.Sprintf(":%v", c.Port), r)
+	err = http.ListenAndServe(fmt.Sprintf(":%v", c.Port), r)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
