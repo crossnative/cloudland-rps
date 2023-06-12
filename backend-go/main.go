@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -26,5 +27,8 @@ func main() {
 		w.Write([]byte("Hello CloudLand!"))
 	})
 
-	http.ListenAndServe(":8080", r)
+	err := http.ListenAndServe(":8080", r)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
