@@ -3,7 +3,7 @@ services:
   plan: free
   name: backend-spring
   env: docker
-  rootDir: spring-backend
+  rootDir: backend-spring
 - type: web
   name: frontend
   env: static
