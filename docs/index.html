@@ -168,23 +168,24 @@
                 <div class="grid grid-cols-12 gap-1 content-start">
                   <div class="col-span-6">
                     <ul>
-                      <li><a href="#/cheat-port-from-env">Configure Port from Environment Variable</a></li>
-                      <li><a href="#/cheat-handle-errors">Handle Errors properly</a></li>
-                      <li><a href="#/cheat-middleware-logging-recovery">Middleware for Logging and Recovery</a></li>
-                      <li><a href="#/cheat-health-check">Add a Health Check</a></li>
+                      <li><a href="#/cheat-go-port-from-env">Configure Port from Environment Variable</a></li>
+                      <li><a href="#/cheat-go-handle-errors">Handle Errors properly</a></li>
+                      <li><a href="#/cheat-go-middleware-logging-recovery">Middleware for Logging and Recovery</a></li>
+                      <li><a href="#/cheat-go-health-check">Add a Health Check</a></li>
                     </ul>
                   </div>
                   <div class="col-span-6">
                     <ul>
-                      <li><a href="#/cheat-run-in-container">Run in Container</a></li>
-                      <li><a href="#/cheat-postgres-storage">Use PostgreSQL for Storage</a></li>
-                      <li><a href="#/cheat-cloud-deployment">Deploy to the cloud</a></li>
+                      <li><a href="#/cheat-go-run-in-container">Run in Container</a></li>
+                      <li><a href="#/cheat-go-postgres-storage">Use PostgreSQL for Storage</a></li>
+                      <li><a href="#/cheat-go-cloud-deployment">Deploy to the cloud</a></li>
+                      <li><a href="#/cheat-go-opentelemetry">Add OpenTelemetry</a></li>
                       <li>...</li>
                     </ul>
                   </div>
                 </div>
               </section>
-              <section id="cheat-middleware-logging-recovery">
+              <section id="cheat-go-middleware-logging-recovery">
                 <h2><small>Cheatsheet</small> Middleware for Logging and Recovery</h2>
                 Using middlewares from chi router or others.
                 <pre><code data-trim data-noescape class="go">
@@ -197,7 +198,7 @@
                   <li>Bonus: How can you set a request timeout using middleware?</li>
                 </ul>          
               </section>        
-              <section id="cheat-port-from-env">
+              <section id="cheat-go-port-from-env">
                 <h2><small>Cheatsheet</small> Configure Port <br/> from Environment Variable </h2>
                 Using the Standard Library
                 <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
@@ -218,7 +219,7 @@
                   }     
                 </code></pre>
               </section>
-              <section id="cheat-handle-errors">
+              <section id="cheat-go-handle-errors">
                 <h2><small>Cheatsheet</small> Handle Errors properly</h2>
                 <h4 class="cross-red">Using the Standard Library</h4>
                 <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
@@ -238,7 +239,7 @@
                     return
                   }        </code></pre>
                 </section>
-                <section id="cheat-run-in-container">
+                <section id="cheat-go-run-in-container">
                   <h2><small>Cheatsheet</small> Run in Container</h2>
                   <pre style="font-size: 0.44em;"><code data-trim data-noescape>
                     # 1. RPS Builder
@@ -254,7 +255,7 @@
                     ENTRYPOINT ["/usr/bin/rps"]
                   </code></pre>
                 </section>
-                <section id="cheat-health-check">
+                <section id="cheat-go-health-check">
                   <h2><small>Cheatsheet</small> Add a Health Check</h2>
                   See <code>github.com/hellofresh/health-go/v5</code>.
                   <pre style="font-size: 0.44em;"><code data-trim data-noescape class="go">
@@ -274,7 +275,7 @@
                     r.Get("/health", h.HandlerFunc)
                   </code></pre>
                 </section>
-                <section id="cheat-postgres-storage">
+                <section id="cheat-go-postgres-storage">
                   <h2><small>Cheatsheet</small> Use PostgreSQL for Storage</h2>
                   <ul>
                     <li><a href="https://www.sohamkamani.com/golang/sql-database/">SQL Tutorial with Go</a></li>
@@ -296,8 +297,11 @@
                     startCommand: ./rps
                   </code></pre>
                 </section>
-              </section>
-              
+                <section id="cheat-go-opentelemetry">
+                  <h2><small>Cheatsheet</small> OpenTelemetry</h2>
+                  Use <a href="https://github.com/riandyrn/otelchi">otelchi</a>
+                </section>
+              </section>              
               
               <section>
                 <section id="spring">
@@ -336,22 +340,37 @@
                     <div class="col-span-6">
                       <ul>
                         <li><a href="https://www.baeldung.com/spring-boot-properties-env-variables">Configurable Application Port</a></li>
-                        <li><a href="https://www.baeldung.com/exception-handling-for-rest-with-spring">Http Error Handler</a></li>
-                        <li><a href="https://www.baeldung.com/spring-boot-logging">Configure proper logging</a></li>
+                        <li><a href="#/cheat-spring-error-handling">Improve Error Handling</a></li>
+                        <li><a href="https://www.baeldung.com/spring-boot-logging">Configure proper Logging</a></li>
                         <li><a href="https://www.baeldung.com/spring-boot-actuators">Health Check</a></li>
                       </ul>
                     </div>
                     <div class="col-span-6">
                       <ul>
-                        <li><a href="https://www.baeldung.com/dockerizing-spring-boot-application">Run in Container</a></li>
+                        <li><a href="#/cheat-spring-run-in-container">Run in Container</a></li>
                         <li><a href="https://www.baeldung.com/spring-boot-postgresql-docker">Use Database for persistence</a></li>
                         <li><a href="https://github.com/crossnative/cloudland-rps/blob/spring-start/render.yaml">Deploy to the Cloud</a></li>
+                        <li><a href="https://github.com/open-telemetry/opentelemetry-java-examples/tree/main/spring-native">Add OpenTelemetry</a></li>
                         <li>...</li>
                       </ul>
                     </div>
                   </div>
                 </section>
-                
+              <section id="cheat-spring-error-handling">
+                <h2><small>Cheatsheet</small> Error Handling</h2>
+                <ul>
+                  <li><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.web.spring.mvc.problemdetails.enabled">Use JSON Problem Details (RFC 7807)</a></li>
+                  <li><a href="https://www.baeldung.com/exception-handling-for-rest-with-spring">Create a Http Error Handler</a></li>
+                </ul>
+              </section>
+                <section id="cheat-spring-run-in-container">
+                  <h2><small>Cheatsheet</small> Run in Container</h2>
+                  With Buildpacks run <br/> <code style="font-size: 75%;">./gradlew bootBuildImage --imageName=myorg/myapp</code>.
+                  <ul>
+                    <li><a href="https://spring.io/guides/topicals/spring-boot-docker/">Spring Official Guide</a></li>
+                    <li><a href="https://www.baeldung.com/dockerizing-spring-boot-application">Baeldung: Dockerizing a Spring Boot Application</a></li>
+                  </ul>                  
+                </section>                
               </section>
               
               <section id="rps-feature-ideas">
